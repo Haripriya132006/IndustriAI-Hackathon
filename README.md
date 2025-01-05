@@ -1,4 +1,6 @@
 # IndustriAI-Hackathon
+
+# 1. To generate specific risk-index for different catagories
 ```
 import numpy as np
 import pandas as pd
