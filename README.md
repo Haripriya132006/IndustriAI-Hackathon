@@ -1,44 +1,44 @@
 # IndustriAI-Hackathon
 ```
+import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error
+from sklearn.linear_model import LinearRegression
 
-# Sample data - For illustration, replace with actual data
-# Features could be climate risk, operational risk, financial risk, etc.
+# Sample data (Risk Index and the corresponding features)
 data = {
-    'Climate_Risk': [7, 5, 8, 6, 9],
-    'Operational_Risk': [6, 7, 5, 6, 4],
-    'Regulatory_Risk': [8, 6, 7, 9, 5],
-    'Market_Risk': [5, 4, 6, 7, 8],
-    'Total_Risk': [6.5, 5.3, 6.5, 6.3, 6.0],  # This is the target value, the risk index.
+    'Risk_Index': [6.2, 6.5, 5.3, 6.0, 5.8],  # Known Risk Index
+    'Solar_Radiation': [5, 6, 7, 5.5, 6.2],  # Solar radiation hours per day (simulated)
+    'Regulatory_Risk': [6, 7, 5, 6, 4],      # Regulatory Risk (simulated)
+    'Technology_Maturity': [7, 8, 6, 7, 8],  # Technology Maturity (simulated)
+    'Geographical_Risk': [5, 4, 6, 5, 7],    # Geographical Risk (simulated)
 }
 
-# Convert the data into a DataFrame
+# Convert data into DataFrame
 df = pd.DataFrame(data)
 
-# Define features and target variable
-X = df[['Climate_Risk', 'Operational_Risk', 'Regulatory_Risk', 'Market_Risk']]
-y = df['Total_Risk']
+# Separate features and target
+X = df[['Solar_Radiation', 'Regulatory_Risk', 'Technology_Maturity', 'Geographical_Risk']]
+y = df['Risk_Index']
 
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Train a Linear Regression model
+model = LinearRegression()
+model.fit(X, y)
 
-# Initialize Random Forest Regressor
-model = RandomForestRegressor(n_estimators=100, random_state=42)
+# Now, given a new Risk Index, we want to predict the features
+# Let's say we have a new Risk Index value and want to generate features for it
 
-# Train the model
-model.fit(X_train, y_train)
+# For example, given a new risk index value:
+new_risk_index = np.array([6.0]).reshape(-1, 1)  # New risk index value
 
-# Make predictions
-y_pred = model.predict(X_test)
+# Use the trained model to predict the features (reverse-engineering from the target)
+# Predicting for each feature:
+predicted_features = model.predict(new_risk_index)
 
-# Evaluate the model
-mae = mean_absolute_error(y_test, y_pred)
-print(f'Mean Absolute Error: {mae}')
-
-# Show the risk index predictions
-print(f'Predicted Risk Index: {y_pred}')
+# Show predicted values for the features corresponding to the new risk index
+print(f'Predicted Features for Risk Index {new_risk_index[0][0]}:')
+print(f'Solar Radiation: {predicted_features[0][0]}')
+print(f'Regulatory Risk: {predicted_features[0][1]}')
+print(f'Technology Maturity: {predicted_features[0][2]}')
+print(f'Geographical Risk: {predicted_features[0][3]}')
 
 ```
